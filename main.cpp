@@ -3,6 +3,9 @@
 #include <iomanip> // For precision
 #include "extract_data.hpp"
 
+// DISCLAIMER:
+// Is is not considering roadtype maxspeed, surface, onewayness, access or elevation for now
+
 int main()
 {
     std::cout << std::setprecision(8);
@@ -16,12 +19,7 @@ int main()
         std::cout << "find_connected_roads" << std::endl;
         std::vector<road> r1 = find_connected_roads(roads, 5087028, 1388325005);
         print_roads(r1);
-
-
     }
-
-
-
     return 0;
 }
 

@@ -41,6 +41,8 @@ std::vector<road> find_connected_roads(const std::vector<road>& roads, const uns
 // Returns ID of fragments in relation to passed fragment
 std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
 
+// Returns distance between fragments
+float calculate_distance_between_fragments(const struct fragment& first_fragment, const struct fragment& second_fragment);
 
 // find path... i want to kill myself
 std::vector<road> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id);

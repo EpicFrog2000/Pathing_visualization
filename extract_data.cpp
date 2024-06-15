@@ -108,6 +108,14 @@ std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsi
     return next_moves;
 }
 
+float calculate_distance_between_fragments(const struct fragment& first_fragment, const struct fragment& second_fragment) {
+    float dx = second_fragment.p.latitude - first_fragment.p.latitude;
+    float dy = second_fragment.p.longitude - first_fragment.p.longitude;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+
+
 std::vector<road> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id) {
     // cmon... do the thing
     std::vector<unsigned int> visited;
