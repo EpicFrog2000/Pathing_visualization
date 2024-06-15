@@ -29,14 +29,21 @@ struct road
 // Phrases data from roads.json downloaded from www.openstreetmap.org
 std::vector<road> convert_json_data_to_my_vector(const std::string& filename);
 
-// Print all roads
+// Print fragments
+void print_fragments(const std::vector<fragment>& fragments);
+
+// Print roads
 void print_roads(const std::vector<road>& roads);
 
-// returns IDs of roads that this fragment is in
-std::vector<road> get_connections_with_node(const std::vector<road>& roads, const unsigned int& fragment_id);
+// Returns other roads connected to that node
+std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
+
+// Returns ID of fragments in relation to passed fragment
+std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
+
 
 // find path... i want to kill myself
-std::vector<road> get_connections_with_node(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id);
+std::vector<road> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id);
 
 
 
