@@ -9,7 +9,6 @@
 int main()
 {
     std::cout << std::setprecision(8);
-
     std::vector<road> roads = convert_json_data_to_my_vector("roads.json");
     //print_roads(roads);
     if (roads.size() > 0)

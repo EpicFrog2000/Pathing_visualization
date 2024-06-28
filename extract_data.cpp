@@ -47,11 +47,13 @@ std::vector<road> convert_json_data_to_my_vector(const std::string& filename)
         }
         else
         {
-            std::cout << "Invalid JSON format. 'elements' array not found or not an array." << std::endl;
+            std::cerr << "Invalid JSON format. 'elements' array not found or not an array." << std::endl;
+            exit(1);
         }
     }
     else {
-        std::cout << "Couldn't open file." << std::endl;
+        std::cerr << "Couldn't open file." << std::endl;
+        exit(1);
     }
     return roads;
 }
@@ -126,7 +128,7 @@ fragment get_fragment_from_id(const std::vector<road>& roads, const unsigned int
         }
     }
     std::cerr << "Fragment not found in roads (" << fragment_ID << ")" << std::endl;
-    exit(0);
+    exit(1);
     return f;
 }
 
@@ -153,4 +155,15 @@ std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned i
     }
 
     return visited;
+}
+
+std::vector<float> prepare_data_for_binding_to_buffers(const std::vector<fragment>& fragments) {
+    // Not indexed for now
+    std::vector<float> verts;
+    for (const auto& frag : fragments) {
+        verts.push_back(frag.p.latitude);   // x
+        verts.push_back(frag.p.longitude);  // y
+        verts.push_back(0.0f);              // z
+    }
+    return verts;
 }
