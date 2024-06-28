@@ -39,7 +39,7 @@ void print_roads(const std::vector<road>& roads);
 std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_fragment_ID);
 
 // Returns ID of fragments in neighbouring to passed fragment
-std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
+std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_fragment_ID);
 
 // Returns distance between fragments
 float calculate_distance_between_fragments(const struct fragment& first_fragment, const struct fragment& second_fragment);
