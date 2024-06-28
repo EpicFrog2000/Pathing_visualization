@@ -36,18 +36,16 @@ void print_fragments(const std::vector<fragment>& fragments);
 void print_roads(const std::vector<road>& roads);
 
 // Returns other roads connected to that node
-std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
+std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_fragment_ID);
 
-// Returns ID of fragments in relation to passed fragment
+// Returns ID of fragments in neighbouring to passed fragment
 std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID);
 
 // Returns distance between fragments
 float calculate_distance_between_fragments(const struct fragment& first_fragment, const struct fragment& second_fragment);
 
+fragment get_fragment_from_id(const std::vector<road>& roads, const unsigned int& fragment_ID);
+
 // find path... i want to kill myself
-std::vector<road> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id);
-
-
-
-
+std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& destination_fragment_id);
 #endif

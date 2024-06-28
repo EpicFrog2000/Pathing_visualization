@@ -72,11 +72,11 @@ void print_roads(const std::vector<road>& roads) {
     }
 }
 
-std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID) {
+std::vector<road> find_connected_roads(const std::vector<road>& roads, const unsigned int& current_fragment_ID) {
     std::vector<road> connected;
     for (const auto& r : roads) {
         for (const auto& frag : r.fragments) {
-            if (frag.node_id == current_fragment_ID && current_road_ID != r.node_ID)
+            if (frag.node_id == current_fragment_ID)
             {
                 connected.push_back(r);
                 break;
@@ -85,9 +85,10 @@ std::vector<road> find_connected_roads(const std::vector<road>& roads, const uns
     }
     return connected;
 }
-std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_road_ID, const unsigned int& current_fragment_ID) {
+
+std::vector<fragment> find_next_moves(const std::vector<road>& roads, const unsigned int& current_fragment_ID) {
     std::vector<fragment> next_moves;
-    std::vector<road> connected = find_connected_roads(roads, current_road_ID, current_fragment_ID);
+    std::vector<road> connected = find_connected_roads(roads, current_fragment_ID);
     for (const auto& r : roads) {
         struct fragment prev_frag(-1, { -1,-1 });
         for (const auto& frag : r.fragments) {
@@ -114,13 +115,42 @@ float calculate_distance_between_fragments(const struct fragment& first_fragment
     return std::sqrt(dx * dx + dy * dy);
 }
 
+fragment get_fragment_from_id(const std::vector<road>& roads, const unsigned int& fragment_ID) {
+    struct fragment f(-1, { -1,-1 });
+    for (const auto& r : roads) {
+        for (const auto& frag : r.fragments) {
+            if (frag.node_id == fragment_ID)
+            {
+                return frag;
+            }
+        }
+    }
+    std::cerr << "Fragment not found in roads (" << fragment_ID << ")" << std::endl;
+    exit(0);
+    return f;
+}
 
+std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& destination_fragment_id) {
+    fragment current_fragment = get_fragment_from_id(roads, start_fragment_id);
+    fragment destination_fragment = get_fragment_from_id(roads, destination_fragment_id);
+    std::vector<fragment> visited;
 
-std::vector<road> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& end_fragment_id) {
-    // cmon... do the thing
-    std::vector<unsigned int> visited;
-    unsigned int current = start_fragment_id;
-    visited.push_back(start_fragment_id);
+    while (current_fragment.node_id != destination_fragment.node_id) {
+        visited.push_back(current_fragment);
+        std::vector<fragment> to_go = find_next_moves(roads, current_fragment.node_id);
+        fragment best_choice = current_fragment;
+        float min_total_distance = std::numeric_limits<float>::max();
+        for (const auto& frag : to_go) {
+            float travel_distance_to_next_node = calculate_distance_between_fragments(current_fragment, frag);
+            float distance_to_end_from_next_node = calculate_distance_between_fragments(frag, destination_fragment);
+            float total_distance = travel_distance_to_next_node + distance_to_end_from_next_node;
+            if (total_distance < min_total_distance) {
+                min_total_distance = total_distance;
+                best_choice = frag;
+            }
+        }
+        current_fragment = best_choice;
+    }
 
-    return {};
+    return visited;
 }

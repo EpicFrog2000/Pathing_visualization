@@ -14,13 +14,10 @@ int main()
     //print_roads(roads);
     if (roads.size() > 0)
     {
-        std::vector<fragment> f1 = find_next_moves(roads, 5087028, 1388325005);
-        print_fragments(f1);
-        std::cout << "find_connected_roads" << std::endl;
-        std::vector<road> r1 = find_connected_roads(roads, 5087028, 1388325005);
-        print_roads(r1);
+        std::vector<fragment> roadspath = find_path(roads, 34662243, 1388325005);
+        print_fragments(roadspath);
     }
     return 0;
 }
 
-// g++ main.cpp ExtractData.cpp && a
+// g++ main.cpp extract_data.cpp && a
