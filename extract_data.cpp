@@ -29,7 +29,7 @@ std::vector<road> convert_json_data_to_my_vector(const std::string& filename)
                 std::vector<coordinates> points;
                 for (const auto& coord : coords) {
                     struct coordinates p(coord["lat"].get<float>(), coord["lon"].get<float>());
-                    points.push_back(p);
+                    points.emplace_back(p);
                 }
 
                 // sklej ze sobą fragmenty i kordynaty drogi
@@ -37,12 +37,12 @@ std::vector<road> convert_json_data_to_my_vector(const std::string& filename)
                 for (int i = 0; i < nodes.size(); i++)
                 {
                     struct fragment frag(nodes[i], points[i]);
-                    fragments.push_back(frag);
+                    fragments.emplace_back(frag);
                 }
 
                 // Wpierdol dane do vectora
                 struct road current_road(id, fragments);
-                roads.push_back(current_road);
+                roads.emplace_back(current_road);
             }
         }
         else
@@ -157,6 +157,7 @@ std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned i
     return visited;
 }
 
+// Used for drawing continus line
 std::vector<float> prepare_data_for_binding_to_buffers(const std::vector<fragment>& fragments) {
     std::vector<float> verts;
     verts.reserve(fragments.size() * 3);
@@ -171,4 +172,24 @@ std::vector<unsigned short int> get_indices_for_buffers(const std::vector<fragme
     std::iota(indices.begin(), indices.end(), 0);
     return indices;
 }
+
+// verts example:
+// {
+//     0.1, 0.1, 0.0,
+//     0.1, 0.2, 0.0,
+//     0.1, 0.3, 0.0,
+//     0.1, 0.4, 0.0,
+// }
+// indices example:
+// {
+//     0,1,2,3,
+// }
+
+// Used fo drawing non continuus lines
+// TODO ^^^
+//      _____
+//     /     \
+//    | () () |
+//     \  ^  /
+//      |||||
 // i am tired boss :ccc
