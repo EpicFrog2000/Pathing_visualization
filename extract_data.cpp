@@ -158,12 +158,17 @@ std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned i
 }
 
 std::vector<float> prepare_data_for_binding_to_buffers(const std::vector<fragment>& fragments) {
-    // Not indexed for now
     std::vector<float> verts;
+    verts.reserve(fragments.size() * 3);
     for (const auto& frag : fragments) {
-        verts.push_back(frag.p.latitude);   // x
-        verts.push_back(frag.p.longitude);  // y
-        verts.push_back(0.0f);              // z
+        verts.insert(verts.end(), {frag.p.latitude, frag.p.longitude, 0.0f});
     }
     return verts;
 }
+
+std::vector<unsigned short int> get_indices_for_buffers(const std::vector<fragment>& fragments) {
+    std::vector<unsigned short int> indices(fragments.size());
+    std::iota(indices.begin(), indices.end(), 0);
+    return indices;
+}
+// i am tired boss :ccc
