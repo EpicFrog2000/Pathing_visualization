@@ -153,43 +153,36 @@ std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned i
         }
         current_fragment = best_choice;
     }
-
+    visited.push_back(destination_fragment);
     return visited;
 }
 
-// Used for drawing continus line
-std::vector<float> prepare_data_for_binding_to_buffers(const std::vector<fragment>& fragments) {
+// coordinates and rgb color values
+std::vector<float> fragments_to_vertices(const std::vector<fragment>& fragments, const std::vector<fragment>& path_fragments) {
     std::vector<float> verts;
-    verts.reserve(fragments.size() * 3);
+    verts.reserve(fragments.size() * 6);
     for (const auto& frag : fragments) {
-        verts.insert(verts.end(), {frag.p.latitude, frag.p.longitude, 0.0f});
+        int found = 0;
+        for (const auto& pfrag : path_fragments) {
+            if (pfrag.node_id == frag.node_id && pfrag.p.latitude == frag.p.latitude && pfrag.p.longitude == frag.p.longitude)
+            {
+                verts.insert(verts.end(), {frag.p.latitude, frag.p.longitude, 0.0f, 1.0f, 0.0f, 0.0f});
+                found = 1; 
+                break;
+            }
+        }
+        if(!found){
+            verts.insert(verts.end(), {frag.p.latitude, frag.p.longitude, 0.0f, 1.0f, 1.0f, 1.0f});
+        }
     }
     return verts;
 }
 
-std::vector<unsigned short int> get_indices_for_buffers(const std::vector<fragment>& fragments) {
-    std::vector<unsigned short int> indices(fragments.size());
-    std::iota(indices.begin(), indices.end(), 0);
+std::vector<unsigned short int> fragments_to_indices(const std::vector<fragment>& fragments) {
+    std::vector<unsigned short int> indices;
+    for (unsigned short int i = 0; i < fragments.size() - 1; i+=2) {
+        indices.push_back(i);
+        indices.push_back(i + 1);
+    }
     return indices;
 }
-
-// verts example:
-// {
-//     0.1, 0.1, 0.0,
-//     0.1, 0.2, 0.0,
-//     0.1, 0.3, 0.0,
-//     0.1, 0.4, 0.0,
-// }
-// indices example:
-// {
-//     0,1,2,3,
-// }
-
-// Used fo drawing non continuus lines
-// TODO ^^^
-//      _____
-//     /     \
-//    | () () |
-//     \  ^  /
-//      |||||
-// i am tired boss :ccc

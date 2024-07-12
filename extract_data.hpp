@@ -49,8 +49,8 @@ fragment get_fragment_from_id(const std::vector<road>& roads, const unsigned int
 // find path... i want to kill myself
 std::vector<fragment> find_path(const std::vector<road>& roads, const unsigned int& start_fragment_id, const unsigned int& destination_fragment_id);
 
-std::vector<float> get_verts_for_buffers(const std::vector<fragment>& fragments);
+std::vector<float> fragments_to_vertices(const std::vector<fragment>& fragments, const std::vector<fragment>& path_fragments);
 
-std::vector<unsigned short int> get_indices_for_buffers(const std::vector<fragment>& fragments);
+std::vector<unsigned short int> fragments_to_indices(const std::vector<fragment>& fragments);
 
 #endif
